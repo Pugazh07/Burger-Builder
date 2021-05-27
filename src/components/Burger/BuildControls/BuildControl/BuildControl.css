@@ -55,3 +55,12 @@
     background-color: #99703F;
     color: white;
 }
+
+.EachPrice{
+    width: 40px;
+    margin-left: 10px;
+    border-radius: 3px;
+    background-color: white;
+    color: seagreen;
+    text-align: center;
+}
