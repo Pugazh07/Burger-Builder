@@ -30,6 +30,10 @@ class BurgerBuilder extends Component{
     }
 
     componentDidMount() {
+        this.loadIngredients();
+    }
+
+    loadIngredients(){
         axios.get('/ingredients.json')
             .then(response => {
                 this.setState({ingredients: response.data});
@@ -61,7 +65,7 @@ class BurgerBuilder extends Component{
 
     purchaseContinueHandler = () => {
         // alert('Ordered!');
-        this.setState({loading: true})
+        /* this.setState({loading: true})
         const order = {
             ingredients: this.state.ingredients,
             price: this.state.totalPrice,
@@ -85,7 +89,20 @@ class BurgerBuilder extends Component{
                 this.setState({loading: false, purchasing: false})
                 // console.log(error);
             })
-        // this.setState({purchasing: false})
+        // this.setState({purchasing: false}) */
+        // console.log("[BurgerBuilder.js] ",JSON.stringify(this.state.ingredients))
+        const queryParams = [];
+        for ( let i in this.state.ingredients ){
+            queryParams.push(encodeURIComponent(i) + "=" + encodeURIComponent(this.state.ingredients[i])) 
+        }
+        queryParams.push('price=' + this.state.totalPrice);
+        const queryString = queryParams.join('&');
+        console.log("[BurgerBuilder.js] ", queryString);
+        this.props.history.push({
+            pathname: '/checkout',
+            // search: '?ing=' + JSON.stringify(this.state.ingredients)
+            search: '?' + queryString
+        });
     }
 
     addIngredientHandler = (type) => {
@@ -158,7 +175,6 @@ class BurgerBuilder extends Component{
                 enableOrder={this.state.purchaseable}
                 enableSummary={this.purchaseHandler}
                 resetBurger={this.resetBurgerHandler}
-                // showReset={this.state.purchaseable}
                 INGREDIENT_PRICES={INGREDIENT_PRICES}/>
             </Aux>;
 

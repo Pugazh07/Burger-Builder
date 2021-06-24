@@ -1,0 +1,16 @@
+.Order{
+    
+    padding: 10px;
+    margin: 10px auto;
+    border: 1px solid black;
+    border-radius: 5px;
+    box-shadow: 0 2px 3px #ccc;
+    width: 80%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 600px){
+    .Order{
+        width: 500px;
+    }
+}
