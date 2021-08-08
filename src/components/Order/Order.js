@@ -21,6 +21,8 @@ const order =(props) =>{
     }
 
     return (<div className={classes.Order}>
+        <p>Name: {props.orderData.name}</p>
+        <p>Order id: {props.orderId}</p>
         <p>Ingredients : {ingredientSummary}</p>
         <p>Price : <strong>&#8377;{props.price}</strong></p>
     </div>)

@@ -5,7 +5,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
-const orders = (props) =>{
+const orders = () =>{
     const [orders, setOrdersState] = useState([]);
     let [loading, setLoadingState] = useState(true);
     useEffect(
@@ -30,7 +30,7 @@ const orders = (props) =>{
     // let order = (<Order />);
     let order = orders.map(order =>{
         return(
-            <Order key={order.id} ingredients={order.ingredients} price={order.price}/>
+            <Order key={order.id} orderId={order.id} orderData={order.orderData} ingredients={order.ingredients} price={order.price}/>
         )
     })
     if(loading){

@@ -4,7 +4,7 @@ import NavigationItem from './NavigationItem/NavigationItem'
 
 const navigationItems = (props) => (
     <ul className={classes.NavigationItems} style={{flexDirection: props.direction}}>
-        <NavigationItem link="/" exact>Burger Builder</NavigationItem>
+        <NavigationItem link="/burger-builder">Burger Builder</NavigationItem>
         <NavigationItem link="/orders">Orders</NavigationItem>
     </ul>
 )

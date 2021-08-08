@@ -6,3 +6,8 @@
     padding: 6px;
     border-radius: 4px;
 }
+
+.InValid{
+    border-color: red;
+    background-color: rgb(238, 182, 161);
+}
