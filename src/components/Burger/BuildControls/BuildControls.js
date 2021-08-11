@@ -2,7 +2,7 @@ import React from 'react';
 import classes from './BuildControls.css';
 import BuildControl from './BuildControl/BuildControl';
 
-import { INGREDIENT_PRICES } from '../../../store/actions/actionTypes'
+import { INGREDIENT_PRICES } from '../../../store/reducers/burgerBuilder'
 
 const controls = [
     {label : 'Salad' , type : 'salad'},

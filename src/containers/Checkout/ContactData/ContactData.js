@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
@@ -95,17 +95,27 @@ const contactData = (props) =>{
     })
 
     // let [loading, setLoadingState] = useState(false);
+    const {ingredients, totalPrice, loading} = useSelector( (state) =>{
+        return {
+            ingredients: state.burgerBuilder.ingredients,
+            totalPrice: state.burgerBuilder.totalPrice,
+            loading: state.order.loading
+        }
+    })
+    const dispatch = useDispatch();
+    const onPurchaseOrder = (orderData, url) => dispatch(purchaseOrderActions.purchaseBurger(orderData, url))
+    console.log("Contact Data state", ingredients, totalPrice, loading);
     
     const orderHandler = (event) => {
         event.preventDefault();
-        console.log("[ContactData.js] ",props);
+        // console.log("[ContactData.js] ",props);
         const formData={};
         for (let key in formState.contactInfo){
             formData[key]=formState.contactInfo[key].value;
         }
         const order = {
-            ingredients: props.ingredients,
-            price: props.totalPrice,
+            ingredients: ingredients,
+            price: totalPrice,
             orderData: formData,
             /* customer: {
                 name: formData["name"],
@@ -128,7 +138,8 @@ const contactData = (props) =>{
                 setLoadingState(false)
                 // console.log(error);
             }) */
-        props.onPurchaseOrder(order, props.history);
+        // props.onPurchaseOrder(order, props.history);
+        onPurchaseOrder(order, props.history);
     }
 
     let checkValidity = (value, rules) =>{
@@ -200,7 +211,7 @@ const contactData = (props) =>{
                 <Button disabled={!formState.formIsValid} btnType="Success">Order</Button>
             </form>
     )
-    if(props.loading){ form = <Spinner />}
+    if(loading){ form = <Spinner />}
     return(
         <div className={classes.ContactData}>
             <h4>Enter your contact data</h4>
@@ -209,7 +220,7 @@ const contactData = (props) =>{
     )
 }
 
-const mapStateToProps = state =>{
+/* const mapStateToProps = state =>{
     return {
         ingredients: state.burgerBuilder.ingredients,
         totalPrice: state.burgerBuilder.totalPrice,
@@ -221,6 +232,7 @@ const mapDispatchToProps = dispatch => {
     return{
         onPurchaseOrder: (orderData, url) => dispatch(purchaseOrderActions.purchaseBurger(orderData, url))
     }
-}
+} */
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(contactData, axios));
+// export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(contactData, axios));
+export default withErrorHandler(contactData, axios);

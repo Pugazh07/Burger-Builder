@@ -36,3 +36,39 @@ export const purchaseBurger = (orderData, url) => {
             })
     }
 }
+
+export const fetchOrdersSuccess = (orders) => {
+    console.log("[actions.js orders]",orders)
+    return{
+        type: actionTypes.FETCH_ORDERS_SUCCESS,
+        orders: orders,
+    }
+}
+
+export const fetchOrdersFail = (error) => {
+    return{
+        type: actionTypes.FETCH_ORDERS_FAIL,
+        error: error
+    }
+}
+
+export const fetchOrdersStart = () => {
+    return{
+        type: actionTypes.FETCH_ORDERS_START
+    }
+}
+
+export const fetchOrders = () => {
+    return dispatch => {
+        dispatch(fetchOrdersStart());
+        axios.get("/orders.json").then(response =>{
+            const fetchedOrders=[];
+            for (let key in response.data){
+                fetchedOrders.push({...response.data[key], id: key})
+            }
+            dispatch(fetchOrdersSuccess(fetchedOrders));
+        }).catch(error =>{
+            dispatch(fetchOrdersFail(error));
+        })
+    }
+}

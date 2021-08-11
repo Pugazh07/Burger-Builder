@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
@@ -26,9 +26,10 @@ const checkout = (props) =>{
         setTotalPrice(price)
         return () => {console.log("[Checkout.js] Cleanup") }
     }, []) */
-    console.log("[Checkout.js] ", props.ingredients)
-    return props.ingredients ? (<div>
-        <CheckoutSummary ingredients={props.ingredients}/>
+    const ingredients = useSelector(state => state.burgerBuilder.ingredients)
+    console.log("[Checkout.js] ", ingredients)
+    return ingredients ? (<div>
+        <CheckoutSummary ingredients={ingredients}/>
         <Route path={props.match.url + '/contact-data'} exact component={ContactData} />
 
         {/* Below code is for before redux */}
@@ -40,12 +41,13 @@ const checkout = (props) =>{
     </div>) : <Redirect to="/" />
 }
 
-const mapStateToProps = state =>{
+/* const mapStateToProps = state =>{
     return (
         {
             ingredients: state.burgerBuilder.ingredients,
         }
     )
-}
+} */
 
-export default connect(mapStateToProps)(checkout);
+// export default connect(mapStateToProps)(checkout);
+export default checkout;
