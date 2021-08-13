@@ -10,7 +10,8 @@ import styles from './Auth.css';
 
 
 const Auth = () => {
-    const loading = useSelector(state => state.auth.loading);
+    const {token, userId ,loading, error} = useSelector(state => state.auth);
+    console.log("Auth.js", token, userId, error)
     const dispatch = useDispatch();
     const [formState, setFormState] = useState({
         controls: {
@@ -42,12 +43,15 @@ const Auth = () => {
                 isValid: false,
                 touched: false
             }
-        }
+        },
+        isSignIn: true
     })
+
+    const [isSignIn, setAuthMode]=useState(true)
     const submitHandler = (event, email=formState.controls.email.value, password=formState.controls.password.value) => {
         console.log(event)
         event.preventDefault();
-        dispatch(actions.auth(email, password))
+        dispatch(actions.auth(email, password, isSignIn))
     }
     let checkValidity = (value, rules) =>{
         let isValid = true;
@@ -82,6 +86,12 @@ const Auth = () => {
         setFormState({controls: newControls});
     }
 
+    let switchAuthMode = (e) =>{
+        e.stopPropagation();
+        e.preventDefault();
+        setAuthMode(!isSignIn);
+    }
+
     let formArrayElements = [];
     for (let key in formState.controls){
         formArrayElements.push({
@@ -90,8 +100,21 @@ const Auth = () => {
         )
     }
 
+    let formHeader="Sign in"
+    let formFooter={
+        p: "Don't have an account ? ",
+        button: "Sign up"
+    }
+    if(!isSignIn){
+        formHeader="Sign up";
+        formFooter.p="Already have an account ? ";
+        formFooter.button="Sign in";
+    }
+
     let form = (
         <form onSubmit={submitHandler}>
+            <h1>{formHeader}</h1>
+            {error ? <p style={{color: 'red', fontWeight: 'bold'}}>{error.message} !</p> : null}
             {formArrayElements.map(element => (
                 <Input
                 key={element.id}
@@ -104,6 +127,7 @@ const Auth = () => {
                 changed={(event) =>{inputChangedHandler(event, element.id)}}/>
             ))}
             <Button btnType="Success">Submit</Button>
+            <p>{formFooter.p}<Button btnType="Danger" clicked={switchAuthMode}>{formFooter.button}</Button></p>
         </form>
     )
     if(loading) form = <Spinner/>
